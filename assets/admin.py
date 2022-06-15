@@ -1,7 +1,13 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
 
-from django_celery_beat.models import IntervalSchedule, SolarSchedule, CrontabSchedule, ClockedSchedule, PeriodicTask
+from django_celery_beat.models import (
+    IntervalSchedule,
+    SolarSchedule,
+    CrontabSchedule,
+    ClockedSchedule,
+    PeriodicTask,
+)
 
 from .models import Asset, AssetData
 
@@ -19,7 +25,7 @@ class AssetDataAdmin(admin.ModelAdmin):
 admin.site.register(Asset, AssetAdmin)
 admin.site.register(AssetData, AssetDataAdmin)
 
-#Hide admin of unnecessary models
+# Hide admin of unnecessary models
 admin.site.unregister(Group)
 admin.site.unregister(IntervalSchedule)
 admin.site.unregister(SolarSchedule)

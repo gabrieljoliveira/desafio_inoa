@@ -37,7 +37,7 @@ class Asset(models.Model):
 
     def __str__(self):
         return f"{self.name}_{self.created_by.first_name}"
-    
+
     def save(self, *args, **kwargs):
         # Update periodic task only if asset object already exists
         if self.id:
@@ -46,15 +46,13 @@ class Asset(models.Model):
                 period=self.period_type, every=self.period_time
             )
             task = PeriodicTask.objects.get(
-                kwargs__contains=json.dumps({
-                    "created_by": asset.created_by.id,
-                    "asset_name": asset.name
-                })
+                kwargs__contains=json.dumps(
+                    {"created_by": asset.created_by.id, "asset_name": asset.name}
+                )
             )
-            task.kwargs = json.dumps({
-                    "created_by": self.created_by.id,
-                    "asset_name": self.name
-                })
+            task.kwargs = json.dumps(
+                {"created_by": self.created_by.id, "asset_name": self.name}
+            )
             task.interval = schedule
             task.enabled = self.monitoring
             task.save()
@@ -77,10 +75,12 @@ class Asset(models.Model):
 
     def delete(self, *args, **kwargs):
         PeriodicTask.objects.get(
-            kwargs__contains=json.dumps({
-                "created_by": self.created_by.id,
-                "asset_name": self.name,
-            })
+            kwargs__contains=json.dumps(
+                {
+                    "created_by": self.created_by.id,
+                    "asset_name": self.name,
+                }
+            )
         ).delete()
         super().delete(*args, **kwargs)
 
@@ -94,7 +94,11 @@ class AssetData(models.Model):
         if self.asset.monitoring:
             if not self.asset.min_value < self.value < self.asset.max_value:
                 send_email(
-                    self.asset.name, self.asset.min_value, self.asset.max_value, self.value, self.asset.created_by.id
+                    self.asset.name,
+                    self.asset.min_value,
+                    self.asset.max_value,
+                    self.value,
+                    self.asset.created_by.id,
                 )
 
         return super().save(*args, **kwargs)

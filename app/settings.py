@@ -99,5 +99,5 @@ CELERY_RESULT_BACKEND = "redis://redis:6379"
 DEFAULT_EMAIL_SENDER = "no-reply@email.com"
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = 'smtp-server'
+EMAIL_HOST = "smtp-server"
 EMAIL_PORT = 1025

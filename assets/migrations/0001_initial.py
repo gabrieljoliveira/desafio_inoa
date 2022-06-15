@@ -15,32 +15,73 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Asset',
+            name="Asset",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(blank=True, max_length=250)),
-                ('min_value', models.DecimalField(decimal_places=2, max_digits=8)),
-                ('max_value', models.DecimalField(decimal_places=2, max_digits=8)),
-                ('period_type', models.CharField(choices=[('days', 'Days'), ('hours', 'Hours'), ('minutes', 'Minutes'), ('seconds', 'Seconds')], default='minutes', max_length=7)),
-                ('period_time', models.IntegerField(blank=True, default=0)),
-                ('monitoring', models.BooleanField(default=False)),
-                ('created_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(blank=True, max_length=250)),
+                ("min_value", models.DecimalField(decimal_places=2, max_digits=8)),
+                ("max_value", models.DecimalField(decimal_places=2, max_digits=8)),
+                (
+                    "period_type",
+                    models.CharField(
+                        choices=[
+                            ("days", "Days"),
+                            ("hours", "Hours"),
+                            ("minutes", "Minutes"),
+                            ("seconds", "Seconds"),
+                        ],
+                        default="minutes",
+                        max_length=7,
+                    ),
+                ),
+                ("period_time", models.IntegerField(blank=True, default=0)),
+                ("monitoring", models.BooleanField(default=False)),
+                (
+                    "created_by",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'db_table': 'asset',
+                "db_table": "asset",
             },
         ),
         migrations.CreateModel(
-            name='AssetData',
+            name="AssetData",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('value', models.DecimalField(decimal_places=2, max_digits=8)),
-                ('data_extraction_time', models.DateTimeField(auto_now_add=True)),
-                ('asset', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='assets.asset')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("value", models.DecimalField(decimal_places=2, max_digits=8)),
+                ("data_extraction_time", models.DateTimeField(auto_now_add=True)),
+                (
+                    "asset",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="assets.asset"
+                    ),
+                ),
             ],
         ),
         migrations.AddConstraint(
-            model_name='asset',
-            constraint=models.UniqueConstraint(fields=('name', 'created_by'), name='unique asset_constraint'),
+            model_name="asset",
+            constraint=models.UniqueConstraint(
+                fields=("name", "created_by"), name="unique asset_constraint"
+            ),
         ),
     ]
